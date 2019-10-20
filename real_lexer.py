@@ -8,15 +8,20 @@ import ply.lex as lex
 import sys
 # List of token names.   This is always required
 tokens = (
-'NUMBER',
 'PLUS',
 'MINUS',
 'TIMES',
 'DIVIDE',
 'LPAREN',
 'RPAREN',
+'lit',
+'type',
+'ident',
+'varid',
+
 )
 
+type_regex = r'(int|cint|float|bool|void)'
 # Regular expression rules for simple tokens
 t_PLUS    = r'\+'
 t_MINUS   = r'-'
@@ -24,12 +29,11 @@ t_TIMES   = r'\*'
 t_DIVIDE  = r'/'
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
+t_lit     = r'true|false|[0-9]+(\.[0-9]+)?'
+t_type    = r'' + type_regex + r'|(noalias )?ref ' + type_regex
+t_ident   = r'[a-zA-Z_]+[a-zA-Z0-9_]*'
+t_varid   = r'\$' + t_ident
 
-# A regular expression rule with some action code
-def t_NUMBER(t):
- r'\d+'
- t.value = int(t.value)    
- return t
 
 # Define a rule so we can track line numbers
 def t_newline(t):
