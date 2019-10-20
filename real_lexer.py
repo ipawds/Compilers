@@ -30,7 +30,7 @@ t_DIVIDE  = r'/'
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
 t_lit     = r'true|false|[0-9]+(\.[0-9]+)?'
-t_type    = r'' + type_regex + r'|(noalias )?ref ' + type_regex
+t_type    = r'' + type_regex + r'|(noalias\s)?ref\s' + type_regex
 t_ident   = r'[a-zA-Z_]+[a-zA-Z0-9_]*'
 t_varid   = r'\$' + t_ident
 
