@@ -7,47 +7,117 @@
 import ply.lex as lex
 import sys
 # List of token names.   This is always required
-tokens = (
+tokens = [
 'PLUS',
 'MINUS',
 'TIMES',
 'DIVIDE',
+'BTH', # bigger than
+'LTH', # less than
+'BAND', # bitwise and
+'BOR', # bitwise or
 'LPAREN',
 'RPAREN',
+'LBRACE',
+'RBRACE',
+'LBRACK',
+'RBRACK',
+'COMMA',
+'SEMICO',
+'EQU',
+'ASSIGN',
+'NEG',
 'lit',
-'type',
+'slit',
+'type_base',
 'ident',
 'varid',
+]
 
-)
 
-type_regex = r'(int|cint|float|bool|void)'
 # Regular expression rules for simple tokens
 t_PLUS    = r'\+'
 t_MINUS   = r'-'
 t_TIMES   = r'\*'
 t_DIVIDE  = r'/'
+t_BTH     = r'\>'
+t_LTH     = r'\<'
+t_BAND    = r'\&\&'
+t_BOR     = r'\|\|'
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
-t_lit     = r'true|false|[0-9]+(\.[0-9]+)?'
-t_type    = r'' + type_regex + r'|(noalias\s)?ref\s' + type_regex
-t_ident   = r'[a-zA-Z_]+[a-zA-Z0-9_]*'
-t_varid   = r'\$' + t_ident
+t_LBRACE  = r'\{'
+t_RBRACE  = r'\}'
+t_LBRACK  = r'\['
+t_RBRACK  = r'\]'
+t_COMMA   = r','
+t_SEMICO  = r';'
+t_EQU     = r'=='
+t_ASSIGN  = r'='
+t_NEG     = r'!'
 
+# some keywords
+reserved = {
+    'if' : 'IF',
+    'then' : 'THEN',
+    'else' : 'ELSE',
+    'while' : 'WHILE',
+    'int' : 'INT',
+    'cint' : 'CINT',
+    'float' : 'FLOAT',
+    'bool' : 'BOOL',
+    'void' : 'VOID',
+    'ref' : 'REF',
+    'noalias' : 'NOALIAS',
+    'def' : 'DEF',
+    'print' : 'PRINT',
+    'extern' : 'EXTERN'
+ }
+
+def t_lit(t):
+    r'true|false|[0-9]+(\.[0-9]+)?'
+    if t.value == 'true':
+        t.value = True
+        return t
+    elif t.value == 'false':
+        t.value = false
+        return t
+    elif t.value.find('.') >= 0:
+        t.value = float(t.value)
+        return t
+    else:
+        t.value = int(t.value)
+        return t
+
+def t_slit(t):
+    r'"[^"\n\r]*"'
+    t.value = t.value[1:-1]
+    return t
+
+def t_ident(t):
+    r'[a-zA-Z_]+[a-zA-Z0-9_]*'
+    t.type = reserved.get(t.value,'ident')    # Check for reserved words
+    return t
+
+def t_varid(t):
+    r'\$[a-zA-Z_]+[a-zA-Z0-9_]*'
+    return t
 
 # Define a rule so we can track line numbers
 def t_newline(t):
- r'\n+'
- t.lexer.lineno += len(t.value)
+    r'\n+'
+    t.lexer.lineno += len(t.value)
 
 # A string containing ignored characters (spaces and tabs)
 t_ignore  = ' \t'
+t_ignore_COMMENT = r'\#.*'
 
 # Error handling rule
 def t_error(t):
- print("Illegal character '%s'" % t.value[0])
- t.lexer.skip(1)
+    print("Illegal character '%s'" % t.value[0])
+    t.lexer.skip(1)
 
+tokens = list(reserved.values()) + tokens
 # Build the lexer
 lexer = lex.lex()
 
