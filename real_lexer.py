@@ -105,16 +105,17 @@ def t_varid(t):
 
 # Define a rule so we can track line numbers
 def t_newline(t):
- r'\n+'
- t.lexer.lineno += len(t.value)
+    r'\n+'
+    t.lexer.lineno += len(t.value)
 
 # A string containing ignored characters (spaces and tabs)
 t_ignore  = ' \t'
+t_ignore_COMMENT = r'\#.*'
 
 # Error handling rule
 def t_error(t):
- print("Illegal character '%s'" % t.value[0])
- t.lexer.skip(1)
+    print("Illegal character '%s'" % t.value[0])
+    t.lexer.skip(1)
 
 tokens = list(reserved.values()) + tokens
 # Build the lexer
