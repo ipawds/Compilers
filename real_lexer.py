@@ -26,6 +26,7 @@ tokens = [
 'SEMICO',
 'EQU',
 'ASSIGN',
+'NEG',
 'lit',
 'slit',
 'type_base',
@@ -53,6 +54,7 @@ t_COMMA   = r','
 t_SEMICO  = r';'
 t_EQU     = r'=='
 t_ASSIGN  = r'='
+t_NEG     = r'!'
 
 # some keywords
 reserved = {
