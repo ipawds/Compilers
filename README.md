@@ -1,5 +1,3 @@
-# Compilers
-
 ## Group Members
 Anqi Ni, Colin Xie
 
