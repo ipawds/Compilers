@@ -1,7 +1,0 @@
-1. Download afl-fuzz on MAC/whatever system you have: brew install afl-fuzz
-
-2. Make sure afl-fuzz is on the system, might need to run MAKE file if on linux, or download from: http://macappstore.org/afl-fuzz/ through: brew install afl-fuzz
-
-3. pip3 install some modules (afl and ply I think, maybe more)
-4. Create a folder called test_inputs, put the .ek files inside
-5. RUN: py-afl-fuzz -i test_inputs -o results -- python3 parser.py
